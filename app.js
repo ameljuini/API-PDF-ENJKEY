@@ -17,12 +17,16 @@ let clients = [
 
    
 ];
+app.use(express.static('public'))
+app.use('/public', express.static(path.join(__dirname, 'public')))
+
 app.get("/generateReport", (req, res) => {
     ejs.renderFile(path.join(__dirname, './views/', "template2.ejs"), {clients: clients}, (err, data) => {
     if (err) {
           res.send(err);
     } else {
-        let options = {
+        let options = { format: 'A4' 
+       /* let options = {
             "height": "12.25in",
             "width": "10.5in",
             "header": {
@@ -30,7 +34,7 @@ app.get("/generateReport", (req, res) => {
             },
             "footer": {
                 "height": "20mm",
-            },
+            },*/
         }; 
         
         pdf.create(data, options).toFile("giftcard.pdf", function (err, data) {
